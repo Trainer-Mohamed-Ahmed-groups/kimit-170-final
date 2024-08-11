@@ -1,16 +1,55 @@
 import { useEffect, useState } from "react"
 import { getProducts } from "../api/getproducts"
-import { Row, Col, Card, Container } from "react-bootstrap"
+import { Row, Col, Card, Container, Button } from "react-bootstrap"
 import { Link } from "react-router-dom"
+import Swal from 'sweetalert2'
 export default function Products() {
     const [products, setProducts] = useState([])
+    const [searchValue, setSearchValue] = useState("")
+    const [filteredProducts, setFilteredProducts] = useState([])
 
+    let handleSearch = (e) => {
+        setSearchValue(e.target.value)
+        fetch("https://fakestoreapi.com/carts?userId=" + e.target.value)
+            .then(res => res.json())
+            .then(res => console.log(res))
+    }
+
+    let handleDelete = (id) => {
+        console.log(id)
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success"
+                });
+                setProducts(products.filter(p => p.id !== id))
+
+                fetch("http://localhost:3000/products/" + id, { method: 'DELETE' })
+            }
+        });
+
+
+    }
 
     useEffect(() => {
         getProducts(setProducts)
+        getProducts(setFilteredProducts)
     }, [])
     return (
         <Container>
+            <input type="text" onChange={handleSearch} className="form-control" />
+            <div>{searchValue}</div>
             <Row>
                 {
                     products.length > 0
@@ -23,6 +62,8 @@ export default function Products() {
                                         <Card.Title>{product.title}</Card.Title>
                                         <Card.Text>{product.description}</Card.Text>
                                         <Link className="btn btn-primary" to={"/products/" + product.id}>View details</Link>
+                                        <Link className="btn btn-info" to={"/products/edit/" + product.id}>Edit product</Link>
+                                        <Button variant="danger" className="ms-2" onClick={() => handleDelete(product.id)}>Delete</Button>
                                     </Card.Body>
                                 </Card>
                             </Col>
