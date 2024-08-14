@@ -87,6 +87,7 @@ export default function Products() {
                             </div>
                         </Col>
                 }
-            </Row></Container>
+            </Row>
+        </Container>
     )
 }

@@ -3,3 +3,16 @@
 * {
   font-family: "Cairo", sans-serif;
 }
+
+.rtl {
+  direction: rtl;
+}
+
+.dark {
+  background-color: #333;
+  color: #999
+}
+.light{
+  background-color: #fff;
+  color: #333;
+}

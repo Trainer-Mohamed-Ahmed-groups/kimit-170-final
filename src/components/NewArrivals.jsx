@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { getProducts } from "../api/getproducts"
-import { Row, Col, Card, Button } from "react-bootstrap"
+import { Row, Col, Card, Button, Container } from "react-bootstrap"
 import { Link } from "react-router-dom"
 const NewArrivals = () => {
 
@@ -12,7 +12,7 @@ const NewArrivals = () => {
     }, [])
 
     return (
-        <>
+        <Container>
             <Row>
                 {
                     products.filter((_, i) => i <= 3).map(product =>
@@ -30,7 +30,7 @@ const NewArrivals = () => {
                 }
             </Row>
             <Link to="/products" className="btn btn-info">View more</Link>
-        </>
+        </Container>
     )
 }
 
